@@ -188,7 +188,6 @@ public class TicTacSchachCat {
         this.line = line;
     }
 
-    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -209,8 +208,10 @@ public class TicTacSchachCat {
     }
 }
 
-
     TicTacSchachCat() {
+
+       
+
         //Hintergrundbild
         ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v1.jpg");
         JLabel hintergrundJLabel = new JLabel(startBildIcon);
@@ -218,9 +219,9 @@ public class TicTacSchachCat {
 
         //startButton erstellen
         JButton startJButton = new JButton();
-        startJButton.setBorder(new FilledRoundedBorder(50, new Color(190,190,190), Color.BLACK));
+        startJButton.setBorder(new FilledRoundedBorder(25, Color.GRAY, Color.BLACK));
         startJButton.setBorderPainted(true);
-        startJButton.setPreferredSize(new Dimension(250,60));
+        startJButton.setPreferredSize(new Dimension(220,60));
         startJButton.setContentAreaFilled(false);
         startJButton.setOpaque(false);
         startJButton.setFocusPainted(false);
@@ -228,18 +229,24 @@ public class TicTacSchachCat {
         //Text für startButton erstellen
         JLabel startButtonText = new JLabel("START");
         startButtonText.setForeground(Color.WHITE);
-        startButtonText.setFont(new Font("Montserrat", Font.BOLD, 45));
+        startButtonText.setFont(new Font("Times New Roman", Font.BOLD, 45));
 
         //Text zum startButton
-        startJButton.add(startButtonText, BorderLayout.CENTER);
+        startJButton.setLayout(new GridBagLayout());
+        startJButton.add(startButtonText, new GridBagConstraints());
+
 
         //Button zum Hintergrund
         hintergrundJLabel.add(startJButton, new GridBagConstraints());
 
         //Komponenten zum startPanel
-        JPanel startPanel = new JPanel();
-        startPanel.setLayout(new BorderLayout());
-        //startPanel.add(startJButton);
+        //JPanel startPanel = new JPanel();
+        //startPanel.setLayout(new BorderLayout());
+
+        //spielPanel erstellen
+        JPanel spielPanel = new JPanel();
+        spielPanel.setLayout(new GridBagLayout());
+        spielPanel.setBackground(Color.WHITE);
 
          //Fenster erstellen
         JFrame fenster = new JFrame("Tic-Tac-Schach");
@@ -248,12 +255,24 @@ public class TicTacSchachCat {
         fenster.setResizable(false);
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        fenster.setContentPane(hintergrundJLabel);
+        //Karten 
+        JPanel kartenPanel = new JPanel(new CardLayout());
+        kartenPanel.add(hintergrundJLabel, "START");
+        kartenPanel.add(spielPanel, "SPIEL");
 
-        //Komponenten zum Fenster hinzufügen
-        
+        //Aktion für den startButton
+        startJButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CardLayout c1 = (CardLayout) kartenPanel.getLayout();
+                c1.show(kartenPanel, "SPIEL");
+            }
+        });
+
+        //Inhalt des JFrame fensters
+        fenster.setContentPane(kartenPanel);
         fenster.setVisible(true);
     }
+    
 
 public static void main(String[]args) {
     new TicTacSchachCat();
