@@ -176,7 +176,7 @@ import javax.swing.border.AbstractBorder;
 
 public class TicTacSchachCat {
 
-    //RoundedBorder für den startJButton
+    //Rounded Corners für Buttons
     class FilledRoundedBorder extends AbstractBorder {
     private final int arc;
     private final Color fill;
@@ -209,9 +209,6 @@ public class TicTacSchachCat {
 }
 
     TicTacSchachCat() {
-
-       
-
         //Hintergrundbild
         ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v1.jpg");
         JLabel hintergrundJLabel = new JLabel(startBildIcon);
@@ -235,13 +232,8 @@ public class TicTacSchachCat {
         startJButton.setLayout(new GridBagLayout());
         startJButton.add(startButtonText, new GridBagConstraints());
 
-
         //Button zum Hintergrund
         hintergrundJLabel.add(startJButton, new GridBagConstraints());
-
-        //Komponenten zum startPanel
-        //JPanel startPanel = new JPanel();
-        //startPanel.setLayout(new BorderLayout());
 
         //spielPanel erstellen
         JPanel spielPanel = new JPanel();
@@ -263,8 +255,8 @@ public class TicTacSchachCat {
         //Aktion für den startButton
         startJButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CardLayout c1 = (CardLayout) kartenPanel.getLayout();
-                c1.show(kartenPanel, "SPIEL");
+                CardLayout c2 = (CardLayout) kartenPanel.getLayout();
+                c2.show(kartenPanel, "SPIEL");
             }
         });
 
@@ -273,7 +265,6 @@ public class TicTacSchachCat {
         fenster.setVisible(true);
     }
     
-
 public static void main(String[]args) {
     new TicTacSchachCat();
 }
