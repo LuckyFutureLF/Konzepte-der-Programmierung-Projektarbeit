@@ -208,9 +208,24 @@ public class TicTacSchachCat {
     }
 }
 
+    //Bildschirmgröße ermitteln
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int bildschirmBreite = screenSize.width;
+    int bildschirmHöhe = screenSize.height;
+
+    //Taskleistengröße ermitteln
+    Insets taskleiste = Toolkit.getDefaultToolkit().getScreenInsets(
+        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration()
+        );
+    int taskleisteHöhe = taskleiste.bottom;
+
+    //tatsächliche Bildschirmhöhe ohne Taskleiste
+    int realBildschirmHöhe = bildschirmHöhe - taskleisteHöhe;
+
     TicTacSchachCat() {
         //Hintergrundbild
-        ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v1.jpg");
+        ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v2.jpg");
+        Image startBild = startBildIcon.getImage().getScaledInstance(bildschirmBreite, realBildschirmHöhe, Image.SCALE_SMOOTH);
         JLabel hintergrundJLabel = new JLabel(startBildIcon);
         hintergrundJLabel.setLayout(new GridBagLayout());
 
