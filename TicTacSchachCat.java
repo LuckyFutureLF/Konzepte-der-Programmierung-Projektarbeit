@@ -220,12 +220,14 @@ public class TicTacSchachCat {
     int taskleisteHöhe = taskleiste.bottom;
 
     //tatsächliche Bildschirmhöhe ohne Taskleiste
-    int realBildschirmHöhe = bildschirmHöhe - taskleisteHöhe;
+    int realBildschirmHöhe = bildschirmHöhe - taskleisteHöhe -40;
+    double startBildSkalierung = (double) realBildschirmHöhe / 1080;
+    int startBildBreite = (int) (1920 * startBildSkalierung);
 
     TicTacSchachCat() {
         //Hintergrundbild
-        ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v2.jpg");
-        Image startBild = startBildIcon.getImage().getScaledInstance(bildschirmBreite, realBildschirmHöhe, Image.SCALE_SMOOTH);
+        ImageIcon startBildIcon = new ImageIcon("tictacschach Startbild v3.jpg");
+        Image startBild = startBildIcon.getImage().getScaledInstance(startBildBreite, realBildschirmHöhe, Image.SCALE_SMOOTH);
         JLabel hintergrundJLabel = new JLabel(startBildIcon);
         hintergrundJLabel.setLayout(new GridBagLayout());
 
