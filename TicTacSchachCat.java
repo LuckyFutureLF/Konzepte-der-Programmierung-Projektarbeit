@@ -173,6 +173,7 @@ import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 
 public class TicTacSchachCat {
 
@@ -214,37 +215,71 @@ public class TicTacSchachCat {
     int bildschirmHöhe = screenSize.height;
 
     TicTacSchachCat() {
-        //Hintergrundbild
-        ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v3.jpg");
-        Image startBild = startBildIcon.getImage().getScaledInstance(bildschirmBreite, bildschirmHöhe, Image.SCALE_SMOOTH);
-        JLabel hintergrundJLabel = new JLabel(new ImageIcon(startBild));
-        hintergrundJLabel.setLayout(new GridBagLayout());
+        //startPanel
+            //Hintergrundbild
+            ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v3.jpg");
+            Image startBild = startBildIcon.getImage().getScaledInstance(bildschirmBreite, bildschirmHöhe, Image.SCALE_SMOOTH);
+            JLabel hintergrundJLabel = new JLabel(new ImageIcon(startBild));
+            hintergrundJLabel.setLayout(new GridBagLayout());
 
-        //startButton erstellen
-        JButton startJButton = new JButton();
-        startJButton.setBorder(new FilledRoundedBorder(25, Color.GRAY, Color.BLACK));
-        startJButton.setBorderPainted(true);
-        startJButton.setPreferredSize(new Dimension(220,60));
-        startJButton.setContentAreaFilled(false);
-        startJButton.setOpaque(false);
-        startJButton.setFocusPainted(false);
+            //startButton erstellen
+            JButton startJButton = new JButton();
+            startJButton.setBorder(new FilledRoundedBorder(25, new Color(150,110,40,200), new Color(140,106,31)));
+            startJButton.setBorderPainted(true);
+            startJButton.setPreferredSize(new Dimension(220,60));
+            startJButton.setContentAreaFilled(false);
+            startJButton.setOpaque(false);
+            startJButton.setFocusPainted(false);
 
-        //Text für startButton erstellen
-        JLabel startButtonText = new JLabel("START");
-        startButtonText.setForeground(Color.WHITE);
-        startButtonText.setFont(new Font("Times New Roman", Font.BOLD, 45));
+            //Text für startButton erstellen
+            JLabel startButtonText = new JLabel("START");
+            startButtonText.setFont(new Font("Georgia", Font.BOLD, 45));
+            startButtonText.setForeground(new Color(255,245,200));
 
-        //Text zum startButton
-        startJButton.setLayout(new GridBagLayout());
-        startJButton.add(startButtonText, new GridBagConstraints());
+            //Text zum startButton
+            startJButton.setLayout(new GridBagLayout());
+            startJButton.add(startButtonText, new GridBagConstraints());
 
-        //Button zum Hintergrund
-        hintergrundJLabel.add(startJButton, new GridBagConstraints());
+            //Button zum Hintergrund
+            hintergrundJLabel.add(startJButton, new GridBagConstraints());
 
-        //spielPanel erstellen
-        JPanel spielPanel = new JPanel();
-        spielPanel.setLayout(new GridBagLayout());
-        spielPanel.setBackground(Color.WHITE);
+        //spielPanel
+            //spielPanel erstellen
+            JPanel spielPanel = new JPanel();
+            spielPanel.setLayout(new GridBagLayout());
+            spielPanel.setBackground(Color.WHITE);
+
+            //spielBrettPanel
+
+            //Buttons 
+                //neuesSpielButton
+                JButton neuesSpielButton = new JButton();
+                neuesSpielButton.setBorder(new FilledRoundedBorder(25, Color.BLACK, Color.BLACK));
+                neuesSpielButton.setBorderPainted(true);
+                neuesSpielButton.setPreferredSize(new Dimension(220,60));
+                neuesSpielButton.setContentAreaFilled(false);
+                neuesSpielButton.setOpaque(false);
+                neuesSpielButton.setFocusPainted(false);
+
+                //Text für neuesSpielButton
+                JLabel neuesSpielButtonText = new JLabel("Neues Spiel");
+                neuesSpielButtonText.setFont(new Font("Georgia", Font.BOLD, 20));
+                neuesSpielButtonText.setForeground(Color.WHITE);
+
+                //Panel für neuesSpielButton
+                JPanel neuesSpielButtonPanel = new JPanel();
+                neuesSpielButtonPanel.setLayout(new BorderLayout());
+
+                 //Text zum neuesSpielButton
+                neuesSpielButton.setLayout(new GridBagLayout());
+                neuesSpielButton.add(neuesSpielButtonText, new GridBagConstraints());
+
+                //Button zum neuesSpielButtonPanel
+                neuesSpielButtonPanel.add(neuesSpielButton, BorderLayout.CENTER);
+
+            //Buttons zum spielPanel
+            spielPanel.setLayout(new BorderLayout());
+            spielPanel.add(neuesSpielButtonPanel, BorderLayout.SOUTH);    
 
          //Fenster erstellen
         JFrame fenster = new JFrame("Tic-Tac-Schach");
