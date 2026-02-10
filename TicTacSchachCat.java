@@ -210,25 +210,14 @@ public class TicTacSchachCat {
 
     //Bildschirmgröße ermitteln
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int bildschirmBreite = screenSize.width;
+    int bildschirmBreite =screenSize.width;
     int bildschirmHöhe = screenSize.height;
-
-    //Taskleistengröße ermitteln
-    Insets taskleiste = Toolkit.getDefaultToolkit().getScreenInsets(
-        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration()
-        );
-    int taskleisteHöhe = taskleiste.bottom;
-
-    //tatsächliche Bildschirmhöhe ohne Taskleiste
-    int realBildschirmHöhe = bildschirmHöhe - taskleisteHöhe -40;
-    double startBildSkalierung = (double) realBildschirmHöhe / 1080;
-    int startBildBreite = (int) (1920 * startBildSkalierung);
 
     TicTacSchachCat() {
         //Hintergrundbild
-        ImageIcon startBildIcon = new ImageIcon("tictacschach Startbild v3.jpg");
-        Image startBild = startBildIcon.getImage().getScaledInstance(startBildBreite, realBildschirmHöhe, Image.SCALE_SMOOTH);
-        JLabel hintergrundJLabel = new JLabel(startBildIcon);
+        ImageIcon startBildIcon = new ImageIcon("tictacschachStartbild v3.jpg");
+        Image startBild = startBildIcon.getImage().getScaledInstance(bildschirmBreite, bildschirmHöhe, Image.SCALE_SMOOTH);
+        JLabel hintergrundJLabel = new JLabel(new ImageIcon(startBild));
         hintergrundJLabel.setLayout(new GridBagLayout());
 
         //startButton erstellen
@@ -267,6 +256,7 @@ public class TicTacSchachCat {
         //Karten 
         JPanel kartenPanel = new JPanel(new CardLayout());
         kartenPanel.add(hintergrundJLabel, "START");
+        kartenPanel.setBackground(Color.BLACK);
         kartenPanel.add(spielPanel, "SPIEL");
 
         //Aktion für den startButton
