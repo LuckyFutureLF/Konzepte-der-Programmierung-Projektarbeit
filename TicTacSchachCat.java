@@ -176,6 +176,7 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 public class TicTacSchachCat {
 
@@ -216,6 +217,8 @@ public class TicTacSchachCat {
     int bildschirmBreite =screenSize.width;
     int bildschirmHöhe = screenSize.height;
 
+    private JFrame fenster;
+
     TicTacSchachCat() {
         //startPanel
             //Hintergrundbild
@@ -232,6 +235,7 @@ public class TicTacSchachCat {
             startJButton.setContentAreaFilled(false);
             startJButton.setOpaque(false);
             startJButton.setFocusPainted(false);
+            startJButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
             //Text für startButton erstellen
             JLabel startButtonText = new JLabel("START");
@@ -270,6 +274,7 @@ public class TicTacSchachCat {
                 neuesSpielButton.setContentAreaFilled(false);
                 neuesSpielButton.setOpaque(false);
                 neuesSpielButton.setFocusPainted(false);
+                neuesSpielButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
                 //Text für neuesSpielButton
                 JLabel neuesSpielButtonText = new JLabel("Neues Spiel");
@@ -294,6 +299,7 @@ public class TicTacSchachCat {
                 resetSpielButton.setContentAreaFilled(false);
                 resetSpielButton.setOpaque(false);
                 resetSpielButton.setFocusPainted(false);
+                resetSpielButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
                 //Text für resetSpielButton 
                 JLabel resetSpielButtonText = new JLabel("Reset Spiel");
@@ -315,13 +321,27 @@ public class TicTacSchachCat {
                 spielButtonPanel.add(neuesSpielButton, BorderLayout.WEST);
                 spielButtonPanel.add(resetSpielButton, BorderLayout.EAST);
 
+                //Spielbereich
+                    JPanel spielbereich = new JPanel();
+                    spielbereich.setLayout(new BorderLayout());
+                    spielbereich.setBackground(Color.WHITE);
+
+                    //Spielbrett
+                    erstelleSpielbrett();
+                    erstelleFigurenPanel();
+                    
+                    spielbereich.add(spieler1Panel, BorderLayout.WEST);
+                    spielbereich.add(spieler2Panel, BorderLayout.EAST);
+                    spielbereich.add(zentriertesspielBrettPanel, BorderLayout.CENTER);
+
             //Komponenten zum spielPanel
             spielPanel.setLayout(new BorderLayout());
             spielPanel.add(titelLabel, BorderLayout.NORTH);
-            spielPanel.add(spielButtonPanel, BorderLayout.SOUTH);    
+            spielPanel.add(spielButtonPanel, BorderLayout.SOUTH); 
+            spielPanel.add(spielbereich, BorderLayout.CENTER);   
 
          //Fenster erstellen
-        JFrame fenster = new JFrame("Tic-Tac-Schach");
+        fenster = new JFrame("Tic-Tac-Schach");
         fenster.setExtendedState(JFrame.MAXIMIZED_BOTH);
         fenster.setLocationRelativeTo(null);
         fenster.setResizable(false);
@@ -341,29 +361,144 @@ public class TicTacSchachCat {
             }
         });
 
-        //3x3 Spielbrett 
-        erstelle3x3Spielbrett();
-
         //Inhalt des JFrame fensters
         fenster.setContentPane(kartenPanel);
         fenster.setVisible(true);
     }
 
-private void erstelle3x3Spielbrett() {
-    JPanel x3SpielbrettPanel = new JPanel();
-    x3SpielbrettPanel.setLayout(new GridLayout(3,3,5,5));
-    x3SpielbrettPanel.setBackground(new Color(44,44,44));
-    x3SpielbrettPanel.setBorder(BorderFactory.createEmptyBorder(20,150,20,150));
+    //Spielbrett
+        //Spielbrett + SpielbrettGröße hier (noch) manuell veränderbar
+        private int spielbrettGröße = 3;
+        private JPanel spielbrettPanel;
+        private JButton[] spielfelder;
+        private JPanel zentriertesspielBrettPanel;
 
-    //Array für 3x3 Feld
-    JButton[] x3felder = new JButton[9];
-    for (int i = 0; i < 9; i++) {
-        x3felder[i] = new JButton("");
-        x3felder[i].setFont(new Font("Georgie", Font.PLAIN, 50));
-        x3felder[i].setFocusable(false);
-    }
+private void erstelleSpielbrett() {
+    spielbrettPanel = new JPanel();
+    spielbrettPanel.setLayout(new GridLayout(spielbrettGröße, spielbrettGröße, 0, 0));
+    spielbrettPanel.setBackground(Color.WHITE);
+
+    //Array für 3x3, evntl später 4x4 Feld
+    spielfelder = new JButton[spielbrettGröße*spielbrettGröße];
+    for (int i = 0; i < spielfelder.length; i++) {
+        spielfelder[i] = new JButton("");
+        spielfelder[i].setFont(new Font("Georgia", Font.PLAIN, 50));
+        spielfelder[i].setPreferredSize(new Dimension(150, 130));
+        spielfelder[i].setBorder(null);
+        spielfelder[i].setMargin(new Insets(0,0,0,0));
+        spielfelder[i].setFocusable(false);
+
+    //Schachbrettfarbe
+    if ((i / spielbrettGröße + i % spielbrettGröße) % 2 == 0) {
+        spielfelder[i].setBackground(Color.BLACK);
+        } else {
+        spielfelder[i].setBackground(Color.WHITE);
+        }
+    final int index = i;
+    spielfelder[i].addActionListener(e -> spielfelderGeklickt(index));
     
+    spielbrettPanel.add(spielfelder[i]);
+    }
+
+    //zentrieren
+    zentriertesspielBrettPanel = new JPanel();
+    zentriertesspielBrettPanel.setLayout(new GridBagLayout());
+    zentriertesspielBrettPanel.add(spielbrettPanel);
+
 }   
+
+private void spielfelderGeklickt(int index) {
+    //Action
+}
+
+    //Spieler + Figuren
+    private JPanel spieler1Panel;
+    private JPanel spieler2Panel;
+    private JButton[] spieler1Figuren;
+    private JButton[] spieler2Figuren;
+
+    private int akutellerSpieler = 1;
+    private JButton ausgewählteFigur = null;
+
+private void erstelleFigurenPanel() {
+    //Spieler 1 links
+    spieler1Panel = new JPanel();
+    spieler1Panel.setLayout(new GridLayout(6, 1, 5, 10));
+    spieler1Panel.setBorder(BorderFactory.createEmptyBorder(90, 200, 50, 50));
+
+    String[] Figuren1 = {"♗", "♗", "♘", "♘", "♖", "♖"};
+    spieler1Figuren = new JButton[Figuren1.length];
+
+    for (int i = 0; i < Figuren1.length; i++) {
+        spieler1Figuren[i] = new JButton(Figuren1[i]);
+        spieler1Figuren[i].setForeground(Color.WHITE);
+        spieler1Figuren[i].setFont(new Font("Dejavu Sans", Font.BOLD, 45));
+        spieler1Figuren[i].setBackground(Color.BLACK);
+        spieler1Figuren[i].setBorderPainted(false);
+        
+        spieler1Figuren[i].setFocusable(false);
+        spieler1Figuren[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+        final int index = i;
+        spieler1Figuren[i].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FigurGeklickt(1, index);
+            }
+        });
+        spieler1Panel.add(spieler1Figuren[i]);
+    }
+
+    //Spieler 2 rechts
+    spieler2Panel = new JPanel();
+    spieler2Panel.setLayout(new GridLayout(6, 1, 5, 10));
+    spieler2Panel.setBorder(BorderFactory.createEmptyBorder(90, 50, 50, 200));
+
+    String[] Figuren2 = {"♗", "♗", "♘", "♘", "♖", "♖"};
+    spieler2Figuren = new JButton[Figuren2.length];
+
+
+    for (int i = 0; i < Figuren2.length; i++) {
+        spieler2Figuren[i] = new JButton(Figuren2[i]);
+        spieler2Figuren[i].setForeground(Color.BLACK);
+        spieler2Figuren[i].setFont(new Font("Dejavu Sans", Font.BOLD, 45));
+        spieler2Figuren[i].setBackground(Color.WHITE);
+        spieler2Figuren[i].setBorderPainted(false);
+        spieler2Figuren[i].setFocusable(false);
+        spieler2Figuren[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        final int index = i;
+        spieler2Figuren[i].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FigurGeklickt(2, index);
+            }
+        });
+        spieler2Panel.add(spieler2Figuren[i]);
+    }
+}
+
+private void FigurGeklickt(int spieler, int figurindex) {
+    //Verweigert falschen Spieler
+    if (spieler != akutellerSpieler) {
+        System.out.println("Spieler " + akutellerSpieler + " ist am Zug!");
+        return;
+    }
+
+    //entfernt Auswahl optisch entfernen
+    if (ausgewählteFigur != null) {
+        ausgewählteFigur.setBorderPainted(false);
+    }
+
+    //neue Figur Auswahl
+    if (spieler == 1) {
+        ausgewählteFigur = spieler1Figuren[figurindex];
+    } else {
+        ausgewählteFigur = spieler2Figuren[figurindex];
+    }
+
+    //neue FIgur Auswahl optisch
+    ausgewählteFigur.setBorderPainted(true);
+    ausgewählteFigur.setBorder(BorderFactory.createLineBorder(new Color(150,110,40),2 ));
+}
+
 
 private void neuesSpiel() {
     ///Aktion für den neuesSpielButton
