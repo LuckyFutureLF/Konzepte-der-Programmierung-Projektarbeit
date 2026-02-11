@@ -56,6 +56,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+
 import java.awt.AWTEvent;
 import java.awt.AWTEventMulticaster;
 import java.awt.AWTException;
@@ -246,17 +248,25 @@ public class TicTacSchachCat {
         //spielPanel
             //spielPanel erstellen
             JPanel spielPanel = new JPanel();
-            spielPanel.setLayout(new GridBagLayout());
+            spielPanel.setLayout(new BorderLayout());
             spielPanel.setBackground(Color.WHITE);
 
-            //spielBrettPanel
+            //titelLabel
+            JLabel titelLabel = new JLabel("TIC-TAC-SCHACH");
+            titelLabel.setFont(new Font("Georgia", Font.BOLD, 45));
+            titelLabel.setForeground(new Color(150,110,40));
+            titelLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            //Buttons 
+            //Buttons für den spielPanel
+                //ButtonPanel
+                JPanel spielButtonPanel = new JPanel ();
+                spielButtonPanel.setBackground(Color.WHITE);
+
                 //neuesSpielButton
                 JButton neuesSpielButton = new JButton();
-                neuesSpielButton.setBorder(new FilledRoundedBorder(25, Color.BLACK, Color.BLACK));
+                neuesSpielButton.setBorder(new FilledRoundedBorder(25, new Color(150,110,40), Color.WHITE));
                 neuesSpielButton.setBorderPainted(true);
-                neuesSpielButton.setPreferredSize(new Dimension(220,60));
+                neuesSpielButton.setPreferredSize(new Dimension(200,40));
                 neuesSpielButton.setContentAreaFilled(false);
                 neuesSpielButton.setOpaque(false);
                 neuesSpielButton.setFocusPainted(false);
@@ -266,20 +276,49 @@ public class TicTacSchachCat {
                 neuesSpielButtonText.setFont(new Font("Georgia", Font.BOLD, 20));
                 neuesSpielButtonText.setForeground(Color.WHITE);
 
-                //Panel für neuesSpielButton
-                JPanel neuesSpielButtonPanel = new JPanel();
-                neuesSpielButtonPanel.setLayout(new BorderLayout());
-
-                 //Text zum neuesSpielButton
+                //Text zum neuesSpielButton
                 neuesSpielButton.setLayout(new GridBagLayout());
                 neuesSpielButton.add(neuesSpielButtonText, new GridBagConstraints());
 
-                //Button zum neuesSpielButtonPanel
-                neuesSpielButtonPanel.add(neuesSpielButton, BorderLayout.CENTER);
+                //Aktion für den neuesSpielButton
+                neuesSpielButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        neuesSpiel();
+                    }
+                });
 
-            //Buttons zum spielPanel
+                //resetButton
+                JButton resetSpielButton = new JButton();
+                resetSpielButton.setBorder(new FilledRoundedBorder(25, new Color(150,110,40), Color.WHITE));
+                resetSpielButton.setPreferredSize(new Dimension(200,40));
+                resetSpielButton.setContentAreaFilled(false);
+                resetSpielButton.setOpaque(false);
+                resetSpielButton.setFocusPainted(false);
+
+                //Text für resetSpielButton 
+                JLabel resetSpielButtonText = new JLabel("Reset Spiel");
+                resetSpielButtonText.setFont(new Font("Georgia", Font.BOLD, 20));
+                resetSpielButtonText.setForeground(Color.WHITE);                
+
+                //Text zum resetButton
+                resetSpielButton.setLayout(new GridBagLayout());
+                resetSpielButton.add(resetSpielButtonText, new GridBagConstraints());
+
+                //Aktion für den resetButton
+                resetSpielButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e ) {
+                        reset();
+                    }
+                });
+
+                //Button zum neuesSpielButtonPanel
+                spielButtonPanel.add(neuesSpielButton, BorderLayout.WEST);
+                spielButtonPanel.add(resetSpielButton, BorderLayout.EAST);
+
+            //Komponenten zum spielPanel
             spielPanel.setLayout(new BorderLayout());
-            spielPanel.add(neuesSpielButtonPanel, BorderLayout.SOUTH);    
+            spielPanel.add(titelLabel, BorderLayout.NORTH);
+            spielPanel.add(spielButtonPanel, BorderLayout.SOUTH);    
 
          //Fenster erstellen
         JFrame fenster = new JFrame("Tic-Tac-Schach");
@@ -302,10 +341,37 @@ public class TicTacSchachCat {
             }
         });
 
+        //3x3 Spielbrett 
+        erstelle3x3Spielbrett();
+
         //Inhalt des JFrame fensters
         fenster.setContentPane(kartenPanel);
         fenster.setVisible(true);
     }
+
+private void erstelle3x3Spielbrett() {
+    JPanel x3SpielbrettPanel = new JPanel();
+    x3SpielbrettPanel.setLayout(new GridLayout(3,3,5,5));
+    x3SpielbrettPanel.setBackground(new Color(44,44,44));
+    x3SpielbrettPanel.setBorder(BorderFactory.createEmptyBorder(20,150,20,150));
+
+    //Array für 3x3 Feld
+    JButton[] x3felder = new JButton[9];
+    for (int i = 0; i < 9; i++) {
+        x3felder[i] = new JButton("");
+        x3felder[i].setFont(new Font("Georgie", Font.PLAIN, 50));
+        x3felder[i].setFocusable(false);
+    }
+    
+}   
+
+private void neuesSpiel() {
+    ///Aktion für den neuesSpielButton
+}    
+
+private void reset() {
+    //Aktion für den ResetSpielButton
+}
     
 public static void main(String[]args) {
     new TicTacSchachCat();
