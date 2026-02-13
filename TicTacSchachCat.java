@@ -424,6 +424,7 @@ private void erstelleFigurenPanel() {
     spieler1Panel = new JPanel();
     spieler1Panel.setLayout(new GridLayout(6, 1, 5, 10));
     spieler1Panel.setBorder(BorderFactory.createEmptyBorder(90, 200, 50, 50));
+    spieler1Panel.setPreferredSize(new Dimension(250, 600));
 
     String[] Figuren1 = {"♗", "♗", "♘", "♘", "♖", "♖"};
     spieler1Figuren = new JButton[Figuren1.length];
@@ -452,6 +453,7 @@ private void erstelleFigurenPanel() {
     spieler2Panel = new JPanel();
     spieler2Panel.setLayout(new GridLayout(6, 1, 5, 10));
     spieler2Panel.setBorder(BorderFactory.createEmptyBorder(90, 50, 50, 200));
+    spieler2Panel.setPreferredSize(new Dimension(250,600));
 
     String[] Figuren2 = {"♗", "♗", "♘", "♘", "♖", "♖"};
     spieler2Figuren = new JButton[Figuren2.length];
