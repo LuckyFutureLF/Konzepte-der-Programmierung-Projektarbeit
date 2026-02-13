@@ -428,7 +428,6 @@ private void erstelleFigurenPanel() {
     String[] Figuren1 = {"♗", "♗", "♘", "♘", "♖", "♖"};
     spieler1Figuren = new JButton[Figuren1.length];
 
-
     for (int i = 0; i < Figuren1.length; i++) {
         spieler1Figuren[i] = new JButton(Figuren1[i]);
         spieler1Figuren[i].setForeground(Color.WHITE);
